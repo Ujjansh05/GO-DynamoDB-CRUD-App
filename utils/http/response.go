@@ -71,6 +71,7 @@ func StatusConflict(w http.ResponseWriter, r *http.Request, err error){
 }
 
 //500
-func StatusInternalServerError(){
-
+func StatusInternalServerError(w http.ResponseWriter, r *http.Request, err error){
+	data := map[string]interface{}{"error": err.Error()}
+	newResponse(data, http.StatusBadRequest).sendResponse(w, r)
 }
