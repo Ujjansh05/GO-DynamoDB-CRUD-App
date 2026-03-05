@@ -53,7 +53,7 @@ func (r *Router)RouterHealth(respository adapter.Interface){
 		route.Options("/", handler.Options)
 	})
 
-}
+}    
 
 func (r *Router)RouterProduct(respository adapter.Interface){
 	handler := ProductHandler.NewHandler(respository)
@@ -83,7 +83,7 @@ func (r * Router) EnableCORS() *Router{
 }
 
 func (r * Router) EnableRecover() *Router{
-	r.router.use(middleware.Recoverer)
+	r.router.use(middleware.Recoverer) 
 	return r
 }
 

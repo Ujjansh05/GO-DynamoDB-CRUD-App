@@ -4,6 +4,8 @@ package adapter
 import(
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
+	"github.com/aws/aws-sdk-g0/dynamodb/dynamodbattribute"
+	"github.com/aws/aws-sadk-go/dynamodb/expression"
 )
 
 type Data struct{
@@ -11,13 +13,20 @@ type Data struct{
 	logMode bool
 }
 
-
 type Interface interface{
+  Health () bool
+  FindAll(condition expression.Expression, tableName string)(response *dynamodb.ScanOutput, err error)
+  FindOne(condition map[string]interface{}, tableName string)(response *dynamodb.GetItemOutput, err error)
+  CreateOrUpdate(entity interface{}, tableName string)(response *dynamodb.PutItemOutput, err error)
+  Delete(condition map[string]interface{}, tableName string)(response *dynamodb.DeleteItemOutput, err error)
 
 }
 
-func Newadapter () Interface{
-
+func Newadapter (con *dynamodb.ynamoDB) Interface{
+	return &Database{
+	connection: con,
+	logMode : false,
+	}
 }
 
 
@@ -26,11 +35,17 @@ func (db * Database) Health() bool{
 	return err == nil 
 }
 
-func (db * Database) FindAll{
-
+func (db * Database) FindAll(condition expression.Expression, tableName string){
+	input := &dynamodb.ScanInput{
+		ExpressionAttributesNames: condition.Names(),
+			ExpressionAttributesValues: condition.Values(),
+			FilterExpressions: conditions.Filter(),
+			ProjectionExpression: condition.Projection(),
+	TableName : aws.String(tableName),
+	}
 }
 
-func (db * Database) FindOne(condition map[string]Interface{}, tableName)(response *dynamodb.GetItemOutput, err error){
+func (db * Database) FindOne(condition map[string]interface{}, tableName)(response *dynamodb.GetItemOutput, err error){
 	conditionParsed, err := dynamodbattribute.MarshalMap(condition)
 
 	if err !== nil {
