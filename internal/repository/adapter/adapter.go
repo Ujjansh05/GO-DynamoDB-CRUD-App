@@ -30,12 +30,12 @@ func Newadapter (con *dynamodb.ynamoDB) Interface{
 }
 
 
-func (db * Database) Health() bool{
+func (db *Database) Health() bool{
 	_,err := db.connection.ListTables(&dynamo.ListTablesInput{})
 	return err == nil 
 }
 
-func (db * Database) FindAll(condition expression.Expression, tableName string){
+func (db *Database) FindAll(condition expression.Expression, tableName string){
 	input := &dynamodb.ScanInput{
 		ExpressionAttributesNames: condition.Names(),
 			ExpressionAttributesValues: condition.Values(),
@@ -45,7 +45,7 @@ func (db * Database) FindAll(condition expression.Expression, tableName string){
 	}
 }
 
-func (db * Database) FindOne(condition map[string]interface{}, tableName)(response *dynamodb.GetItemOutput, err error){
+func (db *Database) FindOne(condition map[string]interface{}, tableName)(response *dynamodb.GetItemOutput, err error){
 	conditionParsed, err := dynamodbattribute.MarshalMap(condition)
 
 	if err !== nil {
@@ -60,7 +60,7 @@ func (db * Database) FindOne(condition map[string]interface{}, tableName)(respon
 }
 
 
-func (db * Database) CreateOrUpdate (entity interface{}, tableName string)(response *dynamodb.PutItemOutput, err error){
+func (db *Database) CreateOrUpdate (entity interface{}, tableName string)(response *dynamodb.PutItemOutput, err error){
 
 	entityParsed, err := dynamodbattribute.MarshalMap(entity)
 
@@ -75,7 +75,7 @@ func (db * Database) CreateOrUpdate (entity interface{}, tableName string)(respo
 	return db.connection.PutItem(input)
 }
 
-func (db * Database) Delete(condition map[string] interface{} tableName string)(response *dynamodb.DeleteItemOutput, err error){
+func (db *Database) Delete(condition map[string] interface{} tableName string)(response *dynamodb.DeleteItemOutput, err error){
 	
 
 	input := &dynamodb.DeleteItemInput{

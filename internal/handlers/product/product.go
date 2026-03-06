@@ -1,10 +1,20 @@
 package product
 
-import (
-	"_/C_/Users/ujjan/Music/Go/GO_DynamoDB_CRUD_App/internal/handlers/product"
+import(
+	"errors"
 	"net/http"
-)
+	"time"
+	"github.com/go-chi/chi"
+	"github.com/google/uuid"
+	"github.com/Ujjansh05/GO_Dynamo_CRUD_App/respository/adapter"
+	"github.com/Ujjansh05/GO_Dynamo_CRUD_App/controllers/product"
+	EntityProduct "github.com/Ujjansh05/GO_Dynamo_CRUD_App/internals/entities/product"
+	"github.com/Ujjansh05/GO_Dynamo_CRUD_App/internals/handlers"
+	Rules "github.com/Ujjansh05/GO_Dynamo_CRUD_App/internals/rules"
+	RulesProduct "github.com/Ujjansh05/GO_Dynamo_CRUD_App/internals/rules/product"
+	HttpStatus"github.com/Ujjansh05/GO_Dynamo_CRUD_App/utils/http"
 
+)
 type Handler struct{
 	handler.Interface
 	Controller product.Interface
@@ -19,16 +29,35 @@ func NewHandler(respository adapter.Interface) handlers.Interface {
 }
 
 
-func Get(){
-
+func (h *Handler)Get(w http.ResponseWriter, r *http.Request){
+	if chi.URLParam(r, "ID") != ""{
+		h.getOne(w, r)
+	}else{
+		h.getAll(w, r)
+	}
 }
 
-func getOne() {
-
+func (h *Handler)getOne(w http.ResponseWriter, r *http.Request) {
+	ID, err := uuid.Parse(chi.URLParame(r, "ID"))
+	if err != nil {
+		HttpStatus.StatusBadRequest(w, r, errors.New("Id is not valid uuid"))
+		return
+	}
+	response, err := h.Controller.Listone(ID)
+	if err != nil {
+		HttpStatus.StatusInternalServerError(w, r, err)
+		return
+	}
+	HttpStatus.StatusOK(w, r, response)
 }
 
-func getAll() {
-
+func (h *Handler)getAll(w http.ResponseWriter, r *http.Request) {
+	response, err := h.Controller.ListAll()
+	if err != nil {
+		HttpStatus.SatausInternalServerError(w, r, err)
+		return 
+	}
+	HttpStatus.StatusOK(w, r, response)
 }
 
 func (h *Handler) Post(w http.ResponseWriter, r *http.Request) {
@@ -47,16 +76,67 @@ func (h *Handler) Post(w http.ResponseWriter, r *http.Request) {
 	HttpStatus.Status(w, r,map[string]interface{}{"id" : ID.String()})
 }
 
-func Put(){
+func (h * Handler)Put(w http.ResponseWriter, r * http.Request){
+	ID, err := uuid.Parse(chi.URLParam(r, "ID"))
+	if err != nil {
+		HttpStatus.StatusBadRequest(w, r, errors.New("ID is not uuid valid"))
+		return
+	}
+	productBody, err := h.getBodyAndValidate(r, ID)
 
+	if err != nil {
+		HttpStatus.StatusBadRequest(w , r, err)
+		return
+	}
+	if err := h.Controller.Update(ID, productBody); err != nil {
+		HttpStatus.StatusInternalServerError(w ,r, err)
+		return
+	}
+
+	HttpStatus.StatusNoContent(w, r)
 }
 
-func Delete(){
+func (h *Handler)Delete(w http.ResponseWriter, r *http.Request){
+	ID, err := uuid.Parse(chi.URLParam(r, "ID"))
+	if err != nil{
+		HttpStatus.StatusBadRequest(w ,r, errors.New("Id is not uuid valid"))
+		return
+	}
+	if err := h.Controler.Remove(ID); err != nil{
+		HttpStatus.StatusInternalServerError(w, r, err)
+		return
+	}
 
+	HttpStatus.StatusNoContent(w ,r)
 }
 
-func Options(){
-
+func (h * Handler)Options(w http.ResponseWriter, r *http.Request){
+	HttpStatus.StatusNoContent(w ,r)
 }
 
-func
+func (h *Handler) getBodyAndValidate(r *http.Request, ID uuid.UUID)(*EntityProduct.Product, error){
+	 
+	productBody := &EntityProduct.Product()
+	body, err	:=	h.Rules.ConvertIoReaderToStruct(r.Body, productBody)
+	if err != nil {
+		 return &EntityProduct.Product{}, errors.New("Body is required")
+	}
+
+	productParse, err := EntityProduct.InterfaceToModel(body)
+	if err != nil {
+		return &EntityProduct.Product{}, errors.New(" error on converting body to body")
+	}
+	setDefaultValues(productParse, ID)
+	return productParse, h.Rule.Validate(productParsed)
+}
+
+func setDefaultValues(product *EntityProduct.Product, ID uuid.UUID){
+	
+	product.UpdateAt = time.Now()
+	if ID == uuid.Nil{
+		product.ID == uuid.New()
+		product.CreatedAt = time.Now
+	}else {
+		 product.ID = ID
+	}
+}

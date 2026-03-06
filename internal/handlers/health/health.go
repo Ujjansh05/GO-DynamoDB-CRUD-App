@@ -1,6 +1,6 @@
 package health
 
-import (
+import ( 
 	"errors"
 	"net/http"
 	"github.com/Ujjansh05/GO_Dynamo_CRUD_App/internal/respository/adapter"
@@ -11,7 +11,7 @@ import (
 type Handler struct{
 	handlers.Interface
 	Respository adapter.Interface
-
+ 
 }
 
 func NewHandler(respository adapter.Interface) handlers.Interface {
@@ -30,18 +30,18 @@ func (h *Handler) Get(w http.ResponseWriter, r *http.Request){
 }
 
 func (h *Handler) Post(w http.ResponseWriter, r *http.Request) {
-	
+	HttpStatus.StatusMethodNotAllowed(w, r)
 }
 
 
-func (h *Handler) Put() {
-
+func (h *Handler) Put(w http.ResponseWriter, r *http.Request) {
+	httpStatus.StatusMethodNotAllowed(w, r)
 }
 
-func (h *Handler) Delete(){
-
+func (h *Handler) Delete(w http.ResponseWriter, r *http.Request){
+	HttpStatus.StatusMethodNotAllowed(w, r)
 }
 
-func (h *Handler) Options(){
-
+func (h *Handler) Options(w http.ResponseWriter, r *http.Request){
+	HttpStatus.StatusNoContent(w, r)
 }
