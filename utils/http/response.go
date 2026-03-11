@@ -8,7 +8,7 @@ import (
 
 
 type response struct{
-	Status int `json:"result"`
+	Status int 		   `json:"result"`
 	Result interface{} `json : "result"`
 }
 
@@ -32,7 +32,7 @@ func (resp *response) sendResponse(w http.ResponseWriter, r *http.Request){
 		w.Header().Set("Content-Type", "application/json")
 		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.WriteHeader(resp.Status)
-		_,_ = w.Write(resp.bytes())
+		_, _ = w.Write(resp.bytes())
 		log.Println(res.string())
 }
 
@@ -44,7 +44,7 @@ func StatusOk(w http.ResponseWriter, r *http.Request, data interface{}){
 
 //200
 func StatusNoContent(w http.ResponseWriter, r *http.Request){
-	newResponse(nil, http.StatusNoContent).sendResponse((w,r))
+	newResponse(nil, http.StatusNoContent).sendResponse(w,r)
 }
 
 //400
@@ -61,7 +61,7 @@ func StatusNotFound(w http.ResponseWriter, r *http.Request, err error){
 
 //405
 func  StatusMethodNotAllowed(w http.ResponseWriter, r *http.Request){
-	newResponse(nil, http.StatusMethodNotAllowed).sendReponse(w, r)
+	newResponse(nil, http.StatusMethodNotAllowed).sendResponse(w, r)
 }
 
 //409

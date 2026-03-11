@@ -6,25 +6,26 @@ import(
 	"time"
 	"github.com/go-chi/chi"
 	"github.com/google/uuid"
-	"github.com/Ujjansh05/GO_Dynamo_CRUD_App/respository/adapter"
-	"github.com/Ujjansh05/GO_Dynamo_CRUD_App/controllers/product"
-	EntityProduct "github.com/Ujjansh05/GO_Dynamo_CRUD_App/internals/entities/product"
-	"github.com/Ujjansh05/GO_Dynamo_CRUD_App/internals/handlers"
-	Rules "github.com/Ujjansh05/GO_Dynamo_CRUD_App/internals/rules"
-	RulesProduct "github.com/Ujjansh05/GO_Dynamo_CRUD_App/internals/rules/product"
-	HttpStatus"github.com/Ujjansh05/GO_Dynamo_CRUD_App/utils/http"
+	"github.com/Ujjansh05/GO-Dynamo-CRUD-App/respository/adapter"
+	"github.com/Ujjansh05/GO-Dynamo-CRUD-App/controllers/product"
+	EntityProduct "github.com/Ujjansh05/GO-Dynamo-CRUD-App/internals/entities/product"
+	"github.com/Ujjansh05/GO-Dynamo-CRUD_App/internals/handlers"
+	Rules "github.com/Ujjansh05/GO-Dynamo-CRUD_App/internals/rules"
+	RulesProduct "github.com/Ujjansh05/GO-Dynamo-CRUD-App/internals/rules/product"
+	HttpStatus"github.com/Ujjansh05/GO-Dynamo-CRUD-App/utils/http"
 
 )
 type Handler struct{
 	handlers.Interface  //change to handlers.Interface
+
 	Controller product.Interface
-	Rules Rules.Interface
+	Rules 	   Rules.Interface
 }
 
 func NewHandler(respository adapter.Interface) handlers.Interface {
 	return &Handler{
 		Controller: product.NewController(respository),
-		Rules : RulesProduct.NewRules(),
+		Rules: RulesProduct.NewRules(),
 	}
 }
 
@@ -122,12 +123,12 @@ func (h *Handler) getBodyAndValidate(r *http.Request, ID uuid.UUID)(*EntityProdu
 		 return &EntityProduct.Product{}, errors.New("Body is required")
 	}
 
-	productParse, err := EntityProduct.InterfaceToModel(body)
+	productParsed, err := EntityProduct.InterfaceToModel(body)
 	if err != nil {
 		return &EntityProduct.Product{}, errors.New(" error on converting body to body")
 	}
-	setDefaultValues(productParse, ID)
-	return productParse, h.Rules.Validate(productParse)
+	setDefaultValues(productParsed, ID)
+	return productParsed, h.Rules.Validate(productParsed)
 }
 
 func setDefaultValues(product *EntityProduct.Product, ID uuid.UUID){

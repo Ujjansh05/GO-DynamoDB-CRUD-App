@@ -8,14 +8,15 @@ import (
 	"github.com/Ujjansh05/GO_Dynamo_CRUD_App/internal/respository/instance"
 	"github.com/Ujjansh05/GO_Dynamo_CRUD_App/internal/routes"
 	"github.com/Ujjansh05/GO_Dynamo_CRUD_App/internal/respository/rules"
-	"github.com/Ujjansh05/GO_Dynamo_CRUD_App/internal/rules/product"
+	RulesProduct "github.com/Ujjansh05/GO_Dynamo_CRUD_App/internal/rules/product"
 	"github.com/Ujjansh05/GO_Dynamo_CRUD_App/utlis/logger"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
+	"github.com/Ujjansh05/GO_Dynamo_CRUD_App/config"
 )
 
 
 func main(){
-	configs := Config.GetConfig()
+	configs := config.GetConfig()
 	connection := instance.GetConnection()
 	respository := adapter.NewAdapter(connection)
 
@@ -24,14 +25,16 @@ func main(){
 	errors := Migrate(connection)
 	if len(errors) > 0 {
 		for _, err := range errors {
-			logger.PANIC("Errors on migrations.......", err )
+			logger.PANIC("Errors on migrate:", err )
 
 		} 
 	}
 	logger.PANIC("", checkTables(connection))
+
 	port := fmt.Sprintf(":%v", configs.Port)
 	router := routes.NewRouter().SetRouter(respository)
 	logger.INFO("service is running on port", port)
+
 	server := http.ListenAndServe(port, router)
 	log.Fatal(server)
 }
@@ -40,7 +43,7 @@ func main(){
 func Migrate(connection *dynamodb.DynamoDB) []error{
 	var errors []error
 	callMigrateAndAppendError (&errors, connection, &RulesProduct.Rules{})
-
+	return errors
 }
 
 
@@ -52,7 +55,7 @@ func callMigrateAndAppendError(errors *[]error, connection *dynamodb.DynamoDB, r
 }
 
 func checkTables(connection *dynamodb.DynamoDB) error {
-	response, err := connection.ListTables (&dynamodb.ListTables(&dynamodb.ListTablesInput{}))
+	response, err := connection.ListTables(&dynamodb.ListTables(&dynamodb.ListTablesInput{}))
 
 	if response != nil {
 		if len(response.TablesNames) == 0 {

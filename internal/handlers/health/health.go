@@ -3,9 +3,10 @@ package health
 import ( 
 	"errors"
 	"net/http"
-	"github.com/Ujjansh05/GO_Dynamo_CRUD_App/internal/respository/adapter"
-	"github.com/Ujjansh05/GO_Dynamo_CRUD_App/internal/handlers"
-
+	"github.com/Ujjansh05/GO-Dynamo-CRUD-App/internal/handlers"
+	"github.com/Ujjansh05/GO-Dynamo-CRUD-App/internal/respository/adapter"
+	"github.com/Ujjansh05/GO-Dynamo-CRUD-App/internal/utils/http"
+	"net/http"
 )
 
 type Handler struct{
@@ -35,7 +36,7 @@ func (h *Handler) Post(w http.ResponseWriter, r *http.Request) {
 
 
 func (h *Handler) Put(w http.ResponseWriter, r *http.Request) {
-	httpStatus.StatusMethodNotAllowed(w, r)
+	HttpStatus.StatusMethodNotAllowed(w, r)
 }
 
 func (h *Handler) Delete(w http.ResponseWriter, r *http.Request){

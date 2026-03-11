@@ -1,9 +1,11 @@
 package product
 
 import (
-	product "C_/Users/ujjan/Music/Go/GO_DynamoDB_CRUD_App/internal/controllers"
-
-	"github.com/gofrs/uuid"
+	"github.com/aws/aws-sdk-go/service/dynamodb/expression"
+	"github.com/google/uuid"
+	"github/Ujjansh05/GO-Dynamo-CRUD-App/internal/entities/product"
+	"github/Ujjansh05/GO-Dynamo-CRUD-App/internal/respository/adapter"
+	"time"
 )
 
 type Controller struct{
@@ -11,7 +13,7 @@ type Controller struct{
 }
 
 type Interface interface{
-	ListOne(id uuid.UUID) (entity product.Product, err error)
+	ListOne(ID uuid.UUID) (entity product.Product, err error)
 	ListAll() (entities []product.Product, err error)
 	Create(entity *product.Product)(uuid.UUID, error)
 	Update(ID uuid.UUID, entity *product.Product) error
@@ -62,8 +64,8 @@ func (c *Controller) ListAll()(entities []product.Product, err ,error){
 
 func (c *Controller) Create(entity *product.Product)(uuid.UUID, error){
 
-	entity.CreatedAt = time.now()
-	c.respository.CreateOrUpdate(entity.GetMap(), entity.TableName())
+	entity.CreatedAt = time.Now()
+	_,err := c.respository.CreateOrUpdate(entity.GetMap(), entity.TableName())
 	return entity.ID, err
 } 
 
@@ -85,7 +87,7 @@ func (c *Controller) Remove(id uuid.UUID) error {
 		return err
 	}
 
-	_,err = c.respository.Delete(entity.GetFilterId(),entity.TableName())
+	_, err = c.respository.Delete(entity.GetFilterId(),entity.TableName())
 	return err
 }
 

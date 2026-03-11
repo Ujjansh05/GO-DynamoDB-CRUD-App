@@ -1,7 +1,7 @@
 package config
 
 import(
-	"github.com/Ujjansh05/GO_DynamoDB_CRUD_App/utlis/env"
+	"github.com/Ujjansh05/GO-DynamoDB-CRUD-App/utlis/env"
 	"strconv"
 )
 
@@ -14,15 +14,15 @@ type Config struct{
 
 func GetConfig() Config{
 	return Config{
-		Port:		parseEnvToInt("PORT", "8080") 
-		Timeout:	parseEnvToInt("TIMEOUT", "30")
-		Dialect: 	env.GetEnv("DIALECT", "sqlite3")
-		DatabaseURI: env.GetEnv("DatabaseURI", "memory:")
+		Port:		 parseEnvToInt("PORT", "8080"), 
+		Timeout:	 parseEnvToInt("TIMEOUT", "30"),
+		Dialect: 	 env.GetEnv("DIALECT", "sqlite3"),
+		DatabaseURI: env.GetEnv("DatabaseURI", ":memory:"),
 	}
 }
 
 func parseEnvToInt(envName, defaultValue string) int{
-	num, err := strconv.Atoi(env.GetEnv(env, defaultValue))
+	num, err := strconv.Atoi(env.GetEnv(envName, defaultValue))
 	if err != nil {
 		return 0
 	}

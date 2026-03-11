@@ -11,8 +11,8 @@ import (
 	Validation "github.com/go-ozzo/ozzo-validation/v4"
 	"github.com/go-ozzo/ozzo-validation/v4/is"
 	"github.com/google/uuid"
-	"github.com/Ujjansh05/GO_Dynamo_CRUD_App/internal/entities"
-	"github.com/Ujjansh05/GO_Dynamo_CRUD_App/internal/entities/product"
+	"github.com/Ujjansh05/GO-Dynamo-CRUD-App/internal/entities"
+	"github.com/Ujjansh05/GO-Dynamo-CRUD-App/internal/entities/product"
 	"time"
 )
 
@@ -30,7 +30,7 @@ func (r *Rules) ConvertIoReaderToStruct(data io.Reader, model interface{})(inter
 }
 
 func (r *Rules)Migrate(connection *dynamodb.dynamodb) error{
-
+	return r.CreateTable(connection)
 }
 
 func (r *Rules) GetMock() interface{}{
@@ -69,8 +69,8 @@ func (r *Rules) CreateTable(connection *dynamodb.Dynamodb) error {
 
 		KeySchema: []*dynamodb.KeySchemaElement{
 			{
-				AttributeName: awsString("_id"),
-				KeyType: aws.String("HASH")
+				AttributeName: aws.String("_id"),
+				KeyType: 	   aws.String("HASH")
 			},
 		},
 		ProvisionedThroughput: &dynamodb.ProvisionedThroughput{

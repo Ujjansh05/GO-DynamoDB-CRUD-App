@@ -3,9 +3,10 @@ package routes
 import (
 	"github.com/go=chi/chi"
 	"github.com/go-chi/chi/middleware"
-	ServerConfig "github.com/Ujjansh05/GO_Dynamo_CRUD_App/config"
-	HealthHandler "github.com/Ujjansh05/GO_Dynamo_CRUD_App/internal/handlers/health"
-	ProductHandler "github.com/Ujjansh05/GO_Dynamo_CRUD_App/internal/handlers/product"
+	ServerConfig "github.com/Ujjansh05/GO-Dynamo-CRUD-App/config"
+	HealthHandler "github.com/Ujjansh05/GO-Dynamo-CRUD-App/internal/handlers/health"
+	ProductHandler "github.com/Ujjansh05/GO-Dynamo-CRUD-App/internal/handlers/product"
+	"github.com/Ujjansh05/GO-Dynamo-CRUD-App/internal/handlers/product"
 )
 
 
@@ -43,7 +44,7 @@ func (r *Router) setConfigsRouter(){
 }
 
 func (r *Router)RouterHealth(respository adapter.Interface){
-	handler := HealthHandler.newHandler(respository)
+	handler := HealthHandler.NewHandler(respository)
 
 	r.router.Route("/health", func(route chi.Router){
 		route.Post("/", handler.Post)
@@ -55,15 +56,16 @@ func (r *Router)RouterHealth(respository adapter.Interface){
 
 }    
 
-func (r *Router)RouterProduct(respository adapter.Interface){
+func (r *Router) RouterProduct(respository adapter.Interface){
 	handler := ProductHandler.NewHandler(respository)
 
 	r.router.Route("/product", func(router chi.Router){
-		router.Post("/", handler.Post)
-		router.Get("/", handler.Get)
-		router.Put("/{ID}", handler.Put)
-		router.Delete("/{ID}", handler.Delete)
-		router.Options("/", handler.Options)
+		route.Post("/", handler.Post)
+		route.Get("/", handler.Get)
+		route.Get("/{ID}", handler.Get)
+		route.Put("/{ID}", handler.Put)
+		route.Delete("/{ID}", handler.Delete)
+		route.Options("/", handler.Options)
 	})
 }
 

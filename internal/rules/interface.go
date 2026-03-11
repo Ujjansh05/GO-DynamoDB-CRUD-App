@@ -2,8 +2,8 @@ package rules
 
 
 import(
-	"io"
 	"github.com/aws/aws-sdk-go/service/dyanmodb"
+	"io"
 )
 
 type Interface interface{
