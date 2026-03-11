@@ -45,7 +45,7 @@ func (db *Database) FindAll(condition expression.Expression, tableName string){
 	}
 }
 
-func (db *Database) FindOne(condition map[string]interface{}, tableName)(response *dynamodb.GetItemOutput, err error){
+func (db *Database) FindOne(condition map[string]interface{}, tableName string)(response *dynamodb.GetItemOutput, err error){
 	conditionParsed, err := dynamodbattribute.MarshalMap(condition)
 
 	if err !== nil {

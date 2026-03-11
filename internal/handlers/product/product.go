@@ -16,7 +16,7 @@ import(
 
 )
 type Handler struct{
-	handler.Interface
+	handlers.Interface  //change to handlers.Interface
 	Controller product.Interface
 	Rules Rules.Interface
 }
@@ -102,7 +102,7 @@ func (h *Handler)Delete(w http.ResponseWriter, r *http.Request){
 		HttpStatus.StatusBadRequest(w ,r, errors.New("Id is not uuid valid"))
 		return
 	}
-	if err := h.Controler.Remove(ID); err != nil{
+	if err := h.Controller.Remove(ID); err != nil{
 		HttpStatus.StatusInternalServerError(w, r, err)
 		return
 	}
@@ -127,7 +127,7 @@ func (h *Handler) getBodyAndValidate(r *http.Request, ID uuid.UUID)(*EntityProdu
 		return &EntityProduct.Product{}, errors.New(" error on converting body to body")
 	}
 	setDefaultValues(productParse, ID)
-	return productParse, h.Rule.Validate(productParsed)
+	return productParse, h.Rules.Validate(productParse)
 }
 
 func setDefaultValues(product *EntityProduct.Product, ID uuid.UUID){
