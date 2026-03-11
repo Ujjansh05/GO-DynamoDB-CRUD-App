@@ -13,7 +13,11 @@ type Product struct{
 }
 
 func InterfaceToModel(data interface{})(instance *Product, err error){
-
+	bytes, err := json.Marshal(data)
+	if err != nil{
+		return instance, err
+	}
+	return instance, json.Unmarshal(bytes, &instance)
 }
 
 func (p *Product) GetFilterId() map[string]interface{}{
