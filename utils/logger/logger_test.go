@@ -4,7 +4,6 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/stretcher/testify/assert"
 	"github.com/stretchr/testify/assert"
 )
 

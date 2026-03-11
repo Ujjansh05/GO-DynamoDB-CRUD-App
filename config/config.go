@@ -1,7 +1,7 @@
 package config
 
 import(
-	"github.com/Ujjansh05/GO-DynamoDB-CRUD-App/utlis/env"
+	"github.com/Ujjansh05/GO_Dynamo_CRUD_App/utils/env"
 	"strconv"
 )
 

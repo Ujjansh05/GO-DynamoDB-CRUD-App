@@ -3,17 +3,17 @@ package product
 import (
 	"encoding/json"
 	"errors"
-	"strings"
 	"io"
+	"strings"
 	"time"
+
+	"github.com/Ujjansh05/GO_Dynamo_CRUD_App/internal/entities"
+	"github.com/Ujjansh05/GO_Dynamo_CRUD_App/internal/entities/product"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 	Validation "github.com/go-ozzo/ozzo-validation/v4"
 	"github.com/go-ozzo/ozzo-validation/v4/is"
 	"github.com/google/uuid"
-	"github.com/Ujjansh05/GO-Dynamo-CRUD-App/internal/entities"
-	"github.com/Ujjansh05/GO-Dynamo-CRUD-App/internal/entities/product"
-	"time"
 )
 
 type Rules struct{}

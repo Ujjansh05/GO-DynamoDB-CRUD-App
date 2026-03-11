@@ -1,11 +1,12 @@
 package product
 
 import (
+	"time"
+
+	"github.com/Ujjansh05/GO_Dynamo_CRUD_App/internal/entities/product"
+	"github.com/Ujjansh05/GO_Dynamo_CRUD_App/internal/repository/adapter"
 	"github.com/aws/aws-sdk-go/service/dynamodb/expression"
 	"github.com/google/uuid"
-	"github/Ujjansh05/GO-Dynamo-CRUD-App/internal/entities/product"
-	"github/Ujjansh05/GO-Dynamo-CRUD-App/internal/respository/adapter"
-	"time"
 )
 
 type Controller struct{

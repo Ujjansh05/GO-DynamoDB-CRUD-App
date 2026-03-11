@@ -4,16 +4,16 @@ import(
 	"errors"
 	"net/http"
 	"time"
+
+	"github.com/Ujjansh05/GO_Dynamo_CRUD_App/internal/controllers/product"
+	EntityProduct "github.com/Ujjansh05/GO_Dynamo_CRUD_App/internal/entities/product"
+	"github.com/Ujjansh05/GO_Dynamo_CRUD_App/internal/handlers"
+	"github.com/Ujjansh05/GO_Dynamo_CRUD_App/internal/repository/adapter"
+	Rules "github.com/Ujjansh05/GO_Dynamo_CRUD_App/internal/rules"
+	RulesProduct "github.com/Ujjansh05/GO_Dynamo_CRUD_App/internal/rules/product"
+	HttpStatus "github.com/Ujjansh05/GO_Dynamo_CRUD_App/utils/http"
 	"github.com/go-chi/chi"
 	"github.com/google/uuid"
-	"github.com/Ujjansh05/GO-Dynamo-CRUD-App/respository/adapter"
-	"github.com/Ujjansh05/GO-Dynamo-CRUD-App/controllers/product"
-	EntityProduct "github.com/Ujjansh05/GO-Dynamo-CRUD-App/internals/entities/product"
-	"github.com/Ujjansh05/GO-Dynamo-CRUD_App/internals/handlers"
-	Rules "github.com/Ujjansh05/GO-Dynamo-CRUD_App/internals/rules"
-	RulesProduct "github.com/Ujjansh05/GO-Dynamo-CRUD-App/internals/rules/product"
-	HttpStatus"github.com/Ujjansh05/GO-Dynamo-CRUD-App/utils/http"
-
 )
 type Handler struct{
 	handlers.Interface  //change to handlers.Interface

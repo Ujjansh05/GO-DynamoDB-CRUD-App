@@ -4,14 +4,14 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"github.com/Ujjansh05/GO_Dynamo_CRUD_App/internal/respository/adapter"
-	"github.com/Ujjansh05/GO_Dynamo_CRUD_App/internal/respository/instance"
-	"github.com/Ujjansh05/GO_Dynamo_CRUD_App/internal/routes"
-	"github.com/Ujjansh05/GO_Dynamo_CRUD_App/internal/respository/rules"
-	RulesProduct "github.com/Ujjansh05/GO_Dynamo_CRUD_App/internal/rules/product"
-	"github.com/Ujjansh05/GO_Dynamo_CRUD_App/utlis/logger"
-	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/Ujjansh05/GO_Dynamo_CRUD_App/config"
+	"github.com/Ujjansh05/GO_Dynamo_CRUD_App/internal/repository/adapter"
+	"github.com/Ujjansh05/GO_Dynamo_CRUD_App/internal/repository/instance"
+	"github.com/Ujjansh05/GO_Dynamo_CRUD_App/internal/routes"
+	"github.com/Ujjansh05/GO_Dynamo_CRUD_App/internal/rules"
+	RulesProduct "github.com/Ujjansh05/GO_Dynamo_CRUD_App/internal/rules/product"
+	"github.com/Ujjansh05/GO_Dynamo_CRUD_App/utils/logger"
+	"github.com/aws/aws-sdk-go/service/dynamodb"
 )
 
 

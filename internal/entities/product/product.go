@@ -2,11 +2,12 @@ package product
 
 import(
 	"encoding/json"
+	"errors"
+	"time"
+
+	"github.com/Ujjansh05/GO_Dynamo_CRUD_App/internal/entities"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/google/uuid"
-	"errors"
-	"github.com/Ujjansh05/GO-DynamoDB-CRUD-App/internal/entities"
-	"time"
 
 )
 

@@ -2,7 +2,7 @@ package rules
 
 
 import(
-	"github.com/aws/aws-sdk-go/service/dyanmodb"
+	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"io"
 )
 

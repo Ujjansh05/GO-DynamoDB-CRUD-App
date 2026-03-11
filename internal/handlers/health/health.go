@@ -3,10 +3,10 @@ package health
 import ( 
 	"errors"
 	"net/http"
-	"github.com/Ujjansh05/GO-Dynamo-CRUD-App/internal/handlers"
-	"github.com/Ujjansh05/GO-Dynamo-CRUD-App/internal/respository/adapter"
-	"github.com/Ujjansh05/GO-Dynamo-CRUD-App/internal/utils/http"
-	"net/http"
+
+	"github.com/Ujjansh05/GO_Dynamo_CRUD_App/internal/handlers"
+	"github.com/Ujjansh05/GO_Dynamo_CRUD_App/internal/repository/adapter"
+	HttpStatus "github.com/Ujjansh05/GO_Dynamo_CRUD_App/utils/http"
 )
 
 type Handler struct{

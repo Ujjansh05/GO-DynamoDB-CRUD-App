@@ -1,12 +1,12 @@
 package routes
 
 import (
-	"github.com/go=chi/chi"
+	serviceConfig "github.com/Ujjansh05/GO_Dynamo_CRUD_App/config"
+	HealthHandler "github.com/Ujjansh05/GO_Dynamo_CRUD_App/internal/handlers/health"
+	ProductHandler "github.com/Ujjansh05/GO_Dynamo_CRUD_App/internal/handlers/product"
+	"github.com/Ujjansh05/GO_Dynamo_CRUD_App/internal/repository/adapter"
+	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
-	ServerConfig "github.com/Ujjansh05/GO-Dynamo-CRUD-App/config"
-	HealthHandler "github.com/Ujjansh05/GO-Dynamo-CRUD-App/internal/handlers/health"
-	ProductHandler "github.com/Ujjansh05/GO-Dynamo-CRUD-App/internal/handlers/product"
-	"github.com/Ujjansh05/GO-Dynamo-CRUD-App/internal/handlers/product"
 )
 
 
