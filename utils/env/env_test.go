@@ -6,8 +6,8 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestGetEnv(t *testing.T){
-	t.Run("Should Return enviroment default", func(t *testing.T){
+func TestGetEnv(t *testing.T) {
+	t.Run("Should Return enviroment default", func(t *testing.T) {
 		defaultValue := "GOLANG"
 		enviroment := "PROGRAM"
 		assert.Equal(t, GetEnv(enviroment, defaultValue), defaultValue)

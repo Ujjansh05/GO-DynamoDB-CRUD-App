@@ -1,6 +1,6 @@
 package product
 
-import(
+import (
 	"encoding/json"
 	"errors"
 	"time"
@@ -8,66 +8,82 @@ import(
 	"github.com/Ujjansh05/GO_Dynamo_CRUD_App/internal/entities"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/google/uuid"
-
 )
 
-type Product struct{
+type Product struct {
 	entities.Base
 	Name string `json:"name"`
 }
 
-func InterfaceToModel(data interface{})(instance *Product, err error){
+func InterfaceToModel(data interface{}) (instance *Product, err error) {
 	bytes, err := json.Marshal(data)
-	if err != nil{
-		return instance, err
+	if err != nil {
+		return nil, err
 	}
-	return instance, json.Unmarshal(bytes, &instance)
+
+	instance = &Product{}
+	if err := json.Unmarshal(bytes, instance); err != nil {
+		return nil, err
+	}
+
+	return instance, nil
 }
 
-func (p *Product) GetFilterId() map[string]interface{}{
+func (p *Product) GetFilterId() map[string]interface{} {
 	return map[string]interface{}{"_id": p.ID.String()}
 }
 
-func (p *Product) TableName() string{
-		return "Products"
+func (p *Product) TableName() string {
+	return "Products"
 }
 
-func (p *Product) Bytes() ([]byte, error){
+func (p *Product) Bytes() ([]byte, error) {
 	return json.Marshal(p)
 }
 
-func (p *Product) GetMap() map[string]interface{}{
+func (p *Product) GetMap() map[string]interface{} {
 	return map[string]interface{}{
-		"_id":			p.ID.String(),
-		"name":			p.Name,
-		"CreatedAt":	p.CreatedAt.Format(entities.GetTimeFormat()),
-		"UpdatedAt": 	p.UpdatedAt.Format(entities.GetTimeFormat()),
+		"_id":       p.ID.String(),
+		"name":      p.Name,
+		"CreatedAt": p.CreatedAt.Format(entities.GetTimeFormat()),
+		"UpdatedAt": p.UpdatedAt.Format(entities.GetTimeFormat()),
 	}
 }
 
-func ParseDynamoAttributeToStruct()(){
-	if response ==nil || (response != nil && len(response) == 0){
+func ParseDynamoAttributeToStruct(response map[string]*dynamodb.AttributeValue) (p Product, err error) {
+	if response == nil || len(response) == 0 {
 		return p, errors.New("Item not found")
 	}
+
 	for key, value := range response {
-		if key == "_id" {
-			p.ID, err == uuid.Parse(*value.S)
+		switch key {
+		case "_id":
+			if value == nil || value.S == nil {
+				return p, errors.New("Item not found")
+			}
+
+			p.ID, err = uuid.Parse(*value.S)
 			if p.ID == uuid.Nil {
 				err = errors.New("Item not found")
 			}
+		case "name":
+			if value != nil && value.S != nil {
+				p.Name = *value.S
+			}
+		case "CreatedAt", "createdAt":
+			if value != nil && value.S != nil {
+				p.CreatedAt, err = time.Parse(entities.GetTimeFormat(), *value.S)
+			}
+		case "UpdatedAt", "updatedAt":
+			if value != nil && value.S != nil {
+				p.UpdatedAt, err = time.Parse(entities.GetTimeFormat(), *value.S)
+			}
 		}
-		if key == "name" {
-			p.Name = *value.S
-		}
-		if key == "	CreatedAt" {
-			p.CreatedAt, err = time.Parse(entities.GetTimeFormat(), *value.S)
-		}
-		if key == "updatedAt" {
-			p.Updated, err = time.Parse(entities.GetTimeFormat(), *value.S)
-		}
+
 		if err != nil {
 			return p, err
 		}
 	}
+
 	return p, nil
 }

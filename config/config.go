@@ -1,27 +1,27 @@
 package config
 
-import(
+import (
 	"github.com/Ujjansh05/GO_Dynamo_CRUD_App/utils/env"
 	"strconv"
 )
 
-type Config struct{
-	Port 		int 
-	Timeout 	int
-	Dialect		string
-	DatabaseURI	string
+type Config struct {
+	Port        int
+	Timeout     int
+	Dialect     string
+	DatabaseURI string
 }
 
-func GetConfig() Config{
+func GetConfig() Config {
 	return Config{
-		Port:		 parseEnvToInt("PORT", "8080"), 
-		Timeout:	 parseEnvToInt("TIMEOUT", "30"),
-		Dialect: 	 env.GetEnv("DIALECT", "sqlite3"),
+		Port:        parseEnvToInt("PORT", "8080"),
+		Timeout:     parseEnvToInt("TIMEOUT", "30"),
+		Dialect:     env.GetEnv("DIALECT", "sqlite3"),
 		DatabaseURI: env.GetEnv("DatabaseURI", ":memory:"),
 	}
 }
 
-func parseEnvToInt(envName, defaultValue string) int{
+func parseEnvToInt(envName, defaultValue string) int {
 	num, err := strconv.Atoi(env.GetEnv(envName, defaultValue))
 	if err != nil {
 		return 0

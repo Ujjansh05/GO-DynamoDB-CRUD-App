@@ -9,32 +9,26 @@ import (
 	"github.com/go-chi/chi/middleware"
 )
 
-
-type Router struct{
+type Router struct {
 	config *Config
 	router *chi.Mux
 }
 
-func NewRouter() *Router{
+func NewRouter() *Router {
 	return &Router{
 		config: NewConfig().SetTimeout(serviceConfig.GetConfig().Timeout),
 		router: chi.NewRouter(),
 	}
 }
 
-
-
-func (r *Router) SetRouter(respository adapter.Interface) *chi.Mux{
-	r.setConfigsRouters()
+func (r *Router) SetRouter(respository adapter.Interface) *chi.Mux {
+	r.setConfigsRouter()
 	r.RouterHealth(respository)
 	r.RouterProduct(respository)
-
-
 	return r.router
-
 }
 
-func (r *Router) setConfigsRouter(){
+func (r *Router) setConfigsRouter() {
 	r.EnableCORS()
 	r.EnableLogger()
 	r.EnableTimeout()
@@ -43,23 +37,22 @@ func (r *Router) setConfigsRouter(){
 	r.EnableRealIP()
 }
 
-func (r *Router)RouterHealth(respository adapter.Interface){
+func (r *Router) RouterHealth(respository adapter.Interface) {
 	handler := HealthHandler.NewHandler(respository)
 
-	r.router.Route("/health", func(route chi.Router){
+	r.router.Route("/health", func(route chi.Router) {
 		route.Post("/", handler.Post)
 		route.Get("/", handler.Get)
 		route.Put("/", handler.Put)
 		route.Delete("/", handler.Delete)
 		route.Options("/", handler.Options)
 	})
+}
 
-}    
-
-func (r *Router) RouterProduct(respository adapter.Interface){
+func (r *Router) RouterProduct(respository adapter.Interface) {
 	handler := ProductHandler.NewHandler(respository)
 
-	r.router.Route("/product", func(router chi.Router){
+	r.router.Route("/product", func(route chi.Router) {
 		route.Post("/", handler.Post)
 		route.Get("/", handler.Get)
 		route.Get("/{ID}", handler.Get)
@@ -69,32 +62,32 @@ func (r *Router) RouterProduct(respository adapter.Interface){
 	})
 }
 
-func (r* Router) EnableLogger() *Router{
-		r.router.Use(middleware.logger)
-		return r
-}
-
-func (r* Router) EnableTimeout() *Router{
-	r.router.Use(middleware.Timeout(r.Config.GetTimeOut()))
+func (r *Router) EnableLogger() *Router {
+	r.router.Use(middleware.Logger)
 	return r
 }
 
-func (r * Router) EnableCORS() *Router{
+func (r *Router) EnableTimeout() *Router {
+	r.router.Use(middleware.Timeout(r.config.GetTimeout()))
+	return r
+}
+
+func (r *Router) EnableCORS() *Router {
 	r.router.Use(r.config.Cors)
 	return r
 }
 
-func (r * Router) EnableRecover() *Router{
-	r.router.use(middleware.Recoverer) 
+func (r *Router) EnableRecover() *Router {
+	r.router.Use(middleware.Recoverer)
 	return r
 }
 
-func (r * Router) EnableRequestID() *Router{
+func (r *Router) EnableRequestID() *Router {
 	r.router.Use(middleware.RequestID)
 	return r
 }
 
-func (r * Router) EnableRealIP() *Router{
+func (r *Router) EnableRealIP() *Router {
 	r.router.Use(middleware.RealIP)
 	return r
 }

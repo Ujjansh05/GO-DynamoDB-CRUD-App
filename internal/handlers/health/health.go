@@ -1,6 +1,6 @@
 package health
 
-import ( 
+import (
 	"errors"
 	"net/http"
 
@@ -9,10 +9,9 @@ import (
 	HttpStatus "github.com/Ujjansh05/GO_Dynamo_CRUD_App/utils/http"
 )
 
-type Handler struct{
+type Handler struct {
 	handlers.Interface
 	Respository adapter.Interface
- 
 }
 
 func NewHandler(respository adapter.Interface) handlers.Interface {
@@ -21,9 +20,8 @@ func NewHandler(respository adapter.Interface) handlers.Interface {
 	}
 }
 
-func (h *Handler) Get(w http.ResponseWriter, r *http.Request){
-
-	if !h.Respository.Health(){
+func (h *Handler) Get(w http.ResponseWriter, r *http.Request) {
+	if !h.Respository.Health() {
 		HttpStatus.StatusInternalServerError(w, r, errors.New("Relation database not alive"))
 		return
 	}
@@ -34,15 +32,14 @@ func (h *Handler) Post(w http.ResponseWriter, r *http.Request) {
 	HttpStatus.StatusMethodNotAllowed(w, r)
 }
 
-
 func (h *Handler) Put(w http.ResponseWriter, r *http.Request) {
 	HttpStatus.StatusMethodNotAllowed(w, r)
 }
 
-func (h *Handler) Delete(w http.ResponseWriter, r *http.Request){
+func (h *Handler) Delete(w http.ResponseWriter, r *http.Request) {
 	HttpStatus.StatusMethodNotAllowed(w, r)
 }
 
-func (h *Handler) Options(w http.ResponseWriter, r *http.Request){
+func (h *Handler) Options(w http.ResponseWriter, r *http.Request) {
 	HttpStatus.StatusNoContent(w, r)
 }
